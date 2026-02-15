@@ -9,11 +9,8 @@ Features
 
 Requirements
 - Python 3.11+
-- `yt-dlp` Python package
-- `questionary` (used for interactive prompts)
 - `ffmpeg` (required for MP3 conversion)
   
-
 Installation
 
 Recommended (use `uv` package manager):
