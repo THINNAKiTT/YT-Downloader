@@ -2,6 +2,9 @@ import os
 import sys
 import yt_dlp
 import questionary
+import dotenv
+
+dotenv.load_dotenv()
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -24,7 +27,8 @@ def download_media():
     ).ask()
 
     # setting for yt-dlp
-    download_dir = os.path.join(current_dir, 'downloaded')
+    # default to ./downloaded if DOWNLOAD_DIR not set
+    download_dir = os.environ.get("DOWNLOAD_DIR") or os.path.join(current_dir, 'downloaded')
     os.makedirs(download_dir, exist_ok=True)
     ydl_opts = {
         'outtmpl': os.path.join(download_dir, '%(title)s.%(ext)s'),
@@ -39,7 +43,7 @@ def download_media():
             choices=[
                 "4K (2160p)",
                 "2K (1440p)",
-                "Full HD (1080p) [แนะนำ]",
+                "Full HD (1080p) [Recommended]",
                 "HD (720p)",
                 "SD (480p)",
             ]
@@ -75,7 +79,7 @@ def download_media():
 
     # 3. Starting Download
     try:
-        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl: # type: ignore
             ydl.download([url])
             print("\n✅ Download completed!")
     except Exception as e:
